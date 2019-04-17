@@ -2,52 +2,61 @@
 #include<fstream>
 #include<cstdlib>
 #include<algorithm>
+#include<vector>
 #include "lista_numere.h"
 using namespace std;
 
 ifstream f("date.in");
 ofstream g("date.out");
-/*int inmultire_matrice_vector(Matrice A, Vector X, Vector Y)
+
+int inmultire_matrice_vector(Matrice_Patratica A, Vector X, Vector Y)
 {
     int ok = 1;
-    for(int i = 1; i <= A.get_linii() && ok == 1; i++)
+    int i = 0;
+    for (i = 0; i < A.get_linii() && ok == 1; i++)
     {
-        Vector V ;
+        Vector V;
         V = A.get_linie(i) * X;
         if(V.suma_elemente() != Y[i])
             ok = 0;
     }
     return ok;
-}*/
+}
 
 
 int main() {
 
-    /*Vector *v;
-    v = new Vector[3];
+    Vector X, Y, Z;
+    Matrice_Patratica Mp1, Mp2, A;
+    Matrice_Oarecare Mo1, Mo2, B;
+
+    /*cin>>Mp1>>Mp2;
+    cout<<Mp1.get_determinant()<<'\n';
+    cout<<Mp1 + Mp2;*/
+
+    /*cin>>Mo1>>Mo2;
+    cout<<Mo1 + Mo2;*/
+
+    /*cin>>X;
+    cin>>Y;
+    cin>>Z;
+
+    vector<Vector> de_sortat;
+    de_sortat.push_back(X);
+    de_sortat.push_back(Y);
+    de_sortat.push_back(Z);
+
+    sort(de_sortat.begin(), de_sortat.end());
+
     for (int i = 0; i < 3; i++) {
-        Vector vaux(3);
-        cin>>vaux;
-        v[i] = vaux;
-    }
+        cout<<de_sortat[i];
+    }*/
 
-    Matrice_Patratica MP1(3, v);
-    Matrice_Patratica MP2;
-    Matrice_Oarecare MO1(3, 3, v);
-    Matrice_Oarecare MO2;*/
+    /*cin>>A;
+    cout<<inmultire_matrice_vector(A, X, Y)<<'\n';
 
-    /*Vector v1;
-    Vector v2;
+    X.sortare();
+    cout<<X;*/
 
-    cin>>v1;
-    cin>>v2;
 
-    cout<<v1 + v2;
-    cout<<v1 * v2;
-    cout<<v1.suma_elemente();
-}*/
-    Matrice_Patratica  M, M2;
-    cin >> M >> M2;
-    M  = M + M2;
-    cout << M;
 }

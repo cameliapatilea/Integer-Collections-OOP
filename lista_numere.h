@@ -148,13 +148,15 @@ public:
         if (this->dim < V.dim) return true;
         if (this->dim > V.dim) return false;
         for (int i = 0; i < this->dim; i++)
-            if (this->v[i] >= V.v[i])
+            if (this->v[i] > V.v[i])
                 return false;
-        return true;
+            else if (this->v[i] < V.v[i])
+                return true;
+        return false;
     }
 
     bool operator<=(const Vector &V) {
-        if (this->dim < V.dim) return true;
+        if (this->dim <= V.dim) return true;
         if (this->dim > V.dim) return false;
         for (int i = 0; i < this->dim; i++)
             if (this->v[i] > V.v[i])
@@ -304,11 +306,12 @@ public:
     virtual ~Matrice() {
         delete[] m;
     }
-    Matrice operator+(const Matrice &M) {
+
+    /*Matrice operator+(const Matrice &M) {
         if (nr_coloane != M.nr_coloane)
             throw invalid_argument("Error! Different sizes!");
         else {
-            Matrice_Patratica rez(nr_coloane);
+            Matrice rez(nr_linii, nr_coloane);
 
             for (int i = 0; i < nr_coloane; i++) {
                 rez.m[i] = m[i] + M.m[i];
@@ -316,7 +319,7 @@ public:
 
             return rez;
         }
-    }
+    }*/
 
     /*
      * Metode GET + SET
@@ -344,7 +347,7 @@ private:
     /*
      * Metoda de calcul a determinantului unei matrice patratice foloseste un calcul iterativ
      */
-    int determinant() {
+    int determinant() const {
         int i, j, total = 1, determinant = 1, num1, num2;
 
         int index;
@@ -414,6 +417,7 @@ public:
     Matrice_Patratica(const Matrice_Patratica &M) {
         dim = M.dim;
         nr_coloane = dim;
+        nr_linii = dim;
         m = new Vector[dim + 1];
         for (int i = 0; i < M.dim; i++)
             m[i] = M.m[i];
@@ -450,6 +454,7 @@ public:
     friend istream &operator>>(istream &input, Matrice_Patratica &M) {
         input >> M.dim;
         M.nr_coloane = M.dim;
+        M.nr_linii = M.dim;
 
         //delete[] M.m;
         M.m = new Vector[M.dim + 1];
@@ -460,7 +465,7 @@ public:
         return input;
     }
 
-    friend ostream &operator<<(ostream &output,Matrice_Patratica &M) {
+    friend ostream &operator<<(ostream &output, const Matrice_Patratica &M) {
         output << M.dim << '\n';
         for (int i = 0; i < M.dim; i++)
             output << M.m[i];
@@ -477,6 +482,8 @@ public:
             return *this;
 
         dim = M.dim;
+        nr_linii = M.dim;
+        nr_coloane = M.dim;
 
         m = new Vector[M.dim];
 
@@ -492,6 +499,20 @@ public:
     Vector &operator[](int pozitie) {
         if (pozitie < dim && pozitie >= 0)
             return m[pozitie];
+    }
+
+    Matrice_Patratica operator+(const Matrice_Patratica &M) {
+        if (dim != M.dim)
+            throw invalid_argument("Error! Different sizes!");
+        else {
+            Matrice_Patratica rez(dim);
+
+            for (int i = 0; i < dim; i++) {
+                rez.m[i] = m[i] + M.m[i];
+            }
+
+            return rez;
+        }
     }
 
     /*
@@ -517,19 +538,7 @@ public:
 
         return true;
     }
-    Matrice_Patratica operator+(const Matrice_Patratica &M) {
-        if (nr_coloane != M.nr_coloane)
-            throw invalid_argument("Error! Different sizes!");
-        else {
-            Matrice_Patratica rez(nr_coloane);
 
-            for (int i = 0; i < nr_coloane; i++) {
-                rez.m[i] = m[i] + M.m[i];
-            }
-
-            return rez;
-        }
-    }
 };
 
 class Matrice_Oarecare : public Matrice {
@@ -552,6 +561,7 @@ public:
     Matrice_Oarecare(const Matrice_Oarecare &M) {
         lin = M.lin;
         nr_coloane = M.nr_coloane;
+        nr_linii = M.nr_linii;
         m = new Vector[M.lin + 1];
         for (int i = 0; i < M.lin; i++)
             m[i] = M.m[i];
@@ -562,6 +572,7 @@ public:
 
     friend istream &operator>>(istream &input, Matrice_Oarecare &M) {
         input >> M.lin >> M.nr_coloane;
+        M.nr_linii = M.lin;
 
         //delete[] M.m;
         M.m = new Vector[M.lin + 1];
@@ -597,6 +608,7 @@ public:
 
         lin = M.lin;
         nr_coloane = M.nr_coloane;
+        nr_linii = M.nr_linii;
         /*if (m != nullptr)
             delete[] m;*/
         m = new Vector[M.lin + 1];
